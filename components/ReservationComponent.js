@@ -8,8 +8,11 @@ import {
   Picker,
   Switch,
   Button,
+  Alert,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
+import * as Animatable from "react-native-animatable";
+import { reset } from "expo/build/AR";
 
 class Reservation extends Component {
   constructor(props) {
@@ -27,13 +30,31 @@ class Reservation extends Component {
     title: "Reserve Campsite",
   };
 
-  toggleModal() {
-    this.setState({ showModal: !this.state.showModal });
-  }
+  // toggleModal() {
+  //   this.setState({ showModal: !this.state.showModal });
+  // }
+
+  // handleReservation() {
+  //   console.log(JSON.stringify(this.state));
+  //   this.toggleModal();
+  // }
 
   handleReservation() {
-    console.log(JSON.stringify(this.state));
-    this.toggleModal();
+    Alert.alert(
+        'Begin search?',
+        this.state.campers + ' ' + this.state.hikeIn + ' ' + this.state.date,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+            onPress: () => this.resetForm()
+          },
+          {
+            text: 'OK',
+            onPress: () => this.resetForm()
+          }
+        ],
+    )
   }
 
   resetForm() {
@@ -47,7 +68,7 @@ class Reservation extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <Animatable.View animation="zoomIn" duration={2000} delay={1000}>
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Number of Campers</Text>
           <Picker
@@ -107,8 +128,8 @@ class Reservation extends Component {
             accessibilityLabel="Tap me to search for available campsites to reserve"
           />
         </View>
-        <Modal
-          animationType={'slide'}
+        {/* <Modal
+          animationType={"slide"}
           transparent={false}
           visible={this.state.showModal}
           onRequestClose={() => this.toggleModal()}
@@ -131,8 +152,8 @@ class Reservation extends Component {
               title="Close"
             ></Button>
           </View>
-        </Modal>
-      </ScrollView>
+        </Modal> */}
+      </Animatable.View>
     );
   }
 }
